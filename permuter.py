@@ -4,10 +4,8 @@ import math
 def findRepeats(word):
     d = {}
     d.update(zip(word,[0]*len(word)))
-    #print(d)
     for a in word:
         d[a] += 1
-    print(d)
     return d
 
 
@@ -49,18 +47,17 @@ def allPerms(d):
             l = allPerms(sd)
             for w in l:
                 ls.add(k + w)
-                ls.add(w + k)
         return ls
     print("unexpected condition")
 
 
 
 if __name__ == "__main__":
-    word = "aeatae"
+    word = "eatcu"
     n, d = numberOfPerms(word)
-    print("Possible permutaions " +str(n))
+    print("Possible permutations " +str(n))
     list = allPerms(d)
     print("Perms expected vs actual: ", n," / ", len(list))
-    print("Perms: ", list)
+    print("List of Perms: ", list)
 
 
