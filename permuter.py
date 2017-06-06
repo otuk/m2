@@ -59,7 +59,7 @@ class Permutator:
             return ls
 
     def listPermutations(self):
-        return Permutator._permutations(self._d)
+        return self._permutations(self._d)
 
 
 
