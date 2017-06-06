@@ -28,7 +28,7 @@ class Permutator:
         return perms
 
     @staticmethod
-    def _permutations(d):
+    def permutations(d):
         s = sum(d.values())
         ls = set()
         if len(d) == 1:
@@ -53,13 +53,13 @@ class Permutator:
                     del sd[k]
                 else:
                     sd[k] -= 1
-                l = Permutator._permutations(sd)
+                l = Permutator.permutations(sd)
                 for w in l:
                     ls.add(k + w)
             return ls
 
     def listPermutations(self):
-        return self._permutations(self._d)
+        return self.permutations(self._d)
 
 
 
