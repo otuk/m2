@@ -1,5 +1,5 @@
 import permuter
-import pytest
+
 
 class TestPermuter:
 

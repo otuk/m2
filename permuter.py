@@ -39,10 +39,8 @@ class Permutator:
             ls.add(p1)
             return ls
         elif s == 2:
-            p1, p2 = "",  ""
-            for k in d.keys():
-                p1 = p1 + k
-                p2 = k + p2
+            p1 = "".join(d.keys())
+            p2 = p1[::-1]
             ls.add(p1)
             ls.add(p2)
             return ls
