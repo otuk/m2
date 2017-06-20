@@ -1,0 +1,3 @@
+
+make permutator accept any object, let object pass a function to represent it as a string default __str__
+make permutator acceept any string as well

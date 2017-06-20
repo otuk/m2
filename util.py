@@ -1,5 +1,5 @@
 
 
-class M2Exception(Exception):
+class AppException(Exception):
     pass
 

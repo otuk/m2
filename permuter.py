@@ -1,4 +1,9 @@
 import math
+from collections import defaultdict
+from typing import DefaultDict
+from typing import Set
+
+from util import AppException
 
 
 class Permutator:
@@ -6,58 +11,75 @@ class Permutator:
     class that finds possible permutations of a word
 
     """
+    def __init__(self, word: str):
+        self._word = word
+        if word is None or len(word) < 1 :
+            raise AppException("Word to permutate is None or 0-length")
+        self._char_counts = find_repeats(self._word)
 
-    def __init__(self, iterable):
-        self._iterable = iterable
-        self._len = len(self._iterable)
-        self._d = self.findRepeats(self._iterable)
+    def number_of_permutations(self) -> int:
+        """
+        calculate number of possible permutations by formula
 
-    @staticmethod
-    def findRepeats(iterable):
-        d = {}
-        d.update(zip(iterable, [0]*len(iterable)))
-        for a in iterable:
-            d[a] += 1
-        return d
-
-
-    def numberOfPerms(self):
-        perms = math.factorial(self._len)
-        for v in self._d.values():
-            perms /= math.factorial(v)
+        :return:  the number of possible permutations
+        """
+        perms = math.factorial(len(self._word))
+        for v in self._char_counts.values():
+            if v > 1:
+                perms /= math.factorial(v)
         return perms
 
     @staticmethod
-    def permutations(d):
-        s = sum(d.values())
-        ls = set()
-        if len(d) == 1:
-            p1 = ""
-            for k, v in d.items():
+    def permutations(char_counts: DefaultDict[str, int])->Set[str]:
+        total_char = sum(char_counts.values())
+        variations = set()
+        if len(char_counts) == 1:
+            word_1 = ""
+            for k, v in char_counts.items():
                 for i in range(v):
-                    p1 += k
-            ls.add(p1)
-            return ls
-        elif s == 2:
-            p1 = "".join(d.keys())
-            p2 = p1[::-1]
-            ls.add(p1)
-            ls.add(p2)
-            return ls
+                    word_1 += k
+            variations.add(word_1)
+            return variations
+        elif total_char == 2:
+            word_1 = "".join(char_counts.keys())
+            word_2 = word_1[::-1]
+            variations.add(word_1)
+            variations.add(word_2)
+            return variations
         else:
-            for k, v in d.items():
-                sd = d.copy()
+            for k, v in char_counts.items():
+                copied_char_counts = char_counts.copy()
                 if v == 1:
-                    del sd[k]
+                    del copied_char_counts[k]
                 else:
-                    sd[k] -= 1
-                l = Permutator.permutations(sd)
-                for w in l:
-                    ls.add(k + w)
-            return ls
+                    copied_char_counts[k] -= 1
+                sub_variations = Permutator.permutations(copied_char_counts)
+                for word in sub_variations:
+                    variations.add(k + word)
+            return variations
 
-    def listPermutations(self):
-        return self.permutations(self._d)
+    def list_permutations(self):
+        """
+        returns a set of words which are permutations of the characters of the word
+
+        :return: all permutations of the original word
+        """
+        return self.permutations(self._char_counts)
+
+
+def find_repeats(word: str) -> DefaultDict[str, int]:
+    """
+    returns a dictionary of characters and number of their occurrances
+
+    :param word: a string to count repeating characters
+    :return: a dictionary of string, int
+    """
+    char_counts = defaultdict(int)
+    if word is None or len(word) == 0:
+        return char_counts
+    for char in word:
+        char_counts[char] += 1
+    return char_counts
 
 
 
